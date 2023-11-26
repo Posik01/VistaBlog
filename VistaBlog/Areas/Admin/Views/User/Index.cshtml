@@ -1,8 +1,38 @@
-﻿
+﻿@model List<VistaBlog.ViewModels.UserVM>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users";
 }
 
 <div class="container-fluid">
-    <h2>User Index Page</h2>
+    <a class="btn btn-primary mb-1" asp-action="Register" asp-controller="User">Add User</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">List of Users</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>UserName</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.UserName</td>
+                            <td>
+                                <a class="btn btn-info" asp-action="ResetPassword" asp-controller="User" asp-route-id="@user.Id">Reset Password</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
