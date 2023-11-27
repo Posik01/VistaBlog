@@ -1,6 +1,6 @@
 ﻿@model List<VistaBlog.ViewModels.UserVM>
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = "Index";
 }
 
 <div class="container-fluid">
@@ -27,7 +27,7 @@
                             <td>@user.LastName</td>
                             <td>@user.UserName</td>
                             <td>
-                                <a class="btn btn-info" asp-action="ResetPassword" asp-controller="User" asp-route-id="@user.Id">Reset Password</a>
+                                <a class="btn btn-secondary">Forget Password</a>
                             </td>
                         </tr>
                     }

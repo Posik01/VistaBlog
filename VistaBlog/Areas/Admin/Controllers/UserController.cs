@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VistaBlog.Models;
+using VistaBlog.Utilites;
 using VistaBlog.ViewModels;
 
 namespace VistaBlog.Areas.Admin.Controllers
@@ -34,11 +35,61 @@ namespace VistaBlog.Areas.Admin.Controllers
                 Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                UserName = x.UserName,
+                UserName = x.UserName
             }).ToList();
-
             return View(vm);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(new RegisterVM());
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM vm)
+        {
+            if (!ModelState.IsValid) { return View(vm); }
+            var checkUserByEmail = await _userManager.FindByEmailAsync(vm.Email);
+            if (checkUserByEmail != null)
+            {
+                _notification.Error("Email already exists");
+                return View(vm);
+            }
+            var checkUserByUsername = await _userManager.FindByNameAsync(vm.UserName);
+            if (checkUserByUsername != null)
+            {
+                _notification.Error("Username already exists");
+                return View(vm);
+            }
+
+            var applicationUser = new ApplicationUser()
+            {
+                Email = vm.Email,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                UserName = vm.UserName
+            };
+
+            var result = await _userManager.CreateAsync(applicationUser, vm.Password);
+            if (result.Succeeded)
+            {
+                if (vm.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAdmin);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAuthor);
+                }
+                _notification.Success("User registered successfully");
+                return RedirectToAction("Index", "User", new { area = "Admin" });
+            }
+            return View(vm);
+        }
+
 
         [HttpGet("Login")]
         public IActionResult Login()
@@ -79,10 +130,5 @@ namespace VistaBlog.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        [HttpGet("AccessDenied")]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
     }
 }
