@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VistaBlog.Data;
+using VistaBlog.Utilites;
 using VistaBlog.Models;
 using VistaBlog.ViewModels;
 
-namespace FineBlog.Areas.Admin.Controllers
+namespace VistaBlog.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]
@@ -29,9 +30,31 @@ namespace FineBlog.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var listOfPosts = new List<Post>();
+
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+            var loggedInUserRole = await _userManager.GetRolesAsync(loggedInUser!);
+            if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin)
+            {
+                listOfPosts = await _context.Posts!.Include(x => x.ApplicationUser).ToListAsync();
+            }
+            else
+            {
+                listOfPosts = await _context.Posts!.Include(x => x.ApplicationUser).Where(x => x.ApplicationUser!.Id == loggedInUser!.Id).ToListAsync();
+            }
+
+            var listOfPostsVM = listOfPosts.Select(x => new PostVM()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                CreatedDate = x.CreatedDate,
+                ThumbnailUrl = x.ThumbnailUrl,
+                AuthorName = x.ApplicationUser!.FirstName + " " + x.ApplicationUser.LastName
+            }).ToList();
+            return View(listOfPostsVM);
         }
 
         [HttpGet]
