@@ -42,7 +42,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3"> Vista Blog</div>
+                <div class="sidebar-brand-text mx-3">Fine Blog</div>
             </a>
 
             <!-- Divider -->
@@ -50,51 +50,52 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" asp-action="Index" asp-controller="Post" asp-area="Admin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Post</span>
                 </a>
             </li>
 
-            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>User</span>
-                </a>
-            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" asp-action="Index" asp-controller="User" asp-area="Admin">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>User</span>
+                    </a>
+                </li>
 
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-file"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">About</a>
-                        <a class="collapse-item" href="utilities-border.html">Contact</a>
-                        <a class="collapse-item" href="utilities-animation.html">Privacy Policy</a>
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                       aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-file"></i>
+                        <span>Pages</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Custom Utilities:</h6>
+                            <a class="collapse-item" href="utilities-color.html">About</a>
+                            <a class="collapse-item" href="utilities-border.html">Contact</a>
+                            <a class="collapse-item" href="utilities-animation.html">Privacy Policy</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            }
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -113,6 +114,7 @@
                     </button>
 
 
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -125,7 +127,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     @loggedInUser?.FirstName @loggedInUser?.LastName
-                                    </span>
+                                </span>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -154,7 +156,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; VistaBlog 2023</span>
+                        <span>Copyright &copy; Fine Blog 2022</span>
                     </div>
                 </div>
             </footer>
@@ -164,12 +166,12 @@
         <!-- End of Content Wrapper -->
 
     </div>
+
     <!-- End of Page Wrapper -->
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/dashboard/vendor/jquery/jquery.min.js"></script>
@@ -191,12 +193,6 @@
     <script>
         $(document).ready(function () {
             $('#myTable').DataTable();
-        });
-
-        tinymce.init({
-            selector: '#richEditor',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
