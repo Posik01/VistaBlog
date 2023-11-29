@@ -20,8 +20,8 @@ namespace VistaBlog.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         public PostController(ApplicationDbContext context,
-                                INotyfService notyfService,
-                                IWebHostEnvironment webHostEnvironment,
+                               INotyfService notyfService,
+                               IWebHostEnvironment webHostEnvironment,
                                 UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -96,6 +96,23 @@ namespace VistaBlog.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await _context.Posts!.FirstOrDefaultAsync(x => x.Id == id);
+
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+            var loggedInUserRole = await _userManager.GetRolesAsync(loggedInUser!);
+
+            if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin || loggedInUser?.Id == post?.ApplicationUserId)
+            {
+                _context.Posts!.Remove(post!);
+                await _context.SaveChangesAsync();
+                _notification.Success("Post Deleted Successfully");
+                return RedirectToAction("Index", "Post", new { area = "Admin" });
+            }
+            return View();
+        }
 
         private string UploadImage(IFormFile file)
         {
