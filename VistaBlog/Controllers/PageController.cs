@@ -1,23 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VistaBlog.Data;
+using VistaBlog.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace VistaBlog.Controllers
 {
     public class PageController : Controller
     {
-
-        public IActionResult About() 
-        { 
-            return View(); 
+        private readonly ApplicationDbContext _context;
+        public PageController(ApplicationDbContext context)
+        {
+            _context = context;
         }
 
-        public IActionResult Contact()
+        public async Task<IActionResult> About()
         {
-            return View();
+            var page = await _context.Pages!.FirstOrDefaultAsync(x => x.Slug == "about");
+            var vm = new PageVM()
+            {
+                Title = page!.Title,
+                ShortDescription = page.ShortDescription,
+                Description = page.Description,
+                ThumbnailUrl = page.ThumbnailUrl,
+            };
+            return View(vm);
         }
 
-        public IActionResult PrivacyPolicy()
+        public async Task<IActionResult> Contact()
         {
-            return View();
+            var page = await _context.Pages!.FirstOrDefaultAsync(x => x.Slug == "contact");
+            var vm = new PageVM()
+            {
+                Title = page!.Title,
+                ShortDescription = page.ShortDescription,
+                Description = page.Description,
+                ThumbnailUrl = page.ThumbnailUrl,
+            };
+            return View(vm);
+        }
+
+        public async Task<IActionResult> PrivacyPolicy()
+        {
+            var page = await _context.Pages!.FirstOrDefaultAsync(x => x.Slug == "privacy");
+            var vm = new PageVM()
+            {
+                Title = page!.Title,
+                ShortDescription = page.ShortDescription,
+                Description = page.Description,
+                ThumbnailUrl = page.ThumbnailUrl,
+            };
+            return View(vm);
         }
     }
 }
