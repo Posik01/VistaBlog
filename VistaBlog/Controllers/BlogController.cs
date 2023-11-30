@@ -4,7 +4,7 @@ using VistaBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FineBlog.Controllers
+namespace VistaBlog.Controllers
 {
     public class BlogController : Controller
     {

@@ -4,7 +4,6 @@ using VistaBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using X.PagedList;
 
 
 namespace VistaBlog.Controllers
@@ -21,16 +20,14 @@ namespace VistaBlog.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public IActionResult Index()
         {
             var vm = new HomeVM();
             var setting = _context.Settings!.ToList();
             vm.Title = setting[0].Title;
             vm.ShortDescription = setting[0].ShortDescription;
             vm.ThumbnailUrl = setting[0].ThumbnailUrl;
-            int pageSize = 4;
-            int pageNumber = (page ?? 1);
-            vm.Posts = await _context.Posts!.Include(x => x.ApplicationUser).OrderByDescending(x => x.CreatedDate).ToPagedListAsync(pageNumber, pageSize);
+            vm.Posts = _context.Posts!.Include(x => x.ApplicationUser).ToList();
             return View(vm);
         }
 

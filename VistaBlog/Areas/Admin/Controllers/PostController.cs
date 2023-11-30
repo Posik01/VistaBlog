@@ -7,7 +7,6 @@ using VistaBlog.Data;
 using VistaBlog.Utilites;
 using VistaBlog.Models;
 using VistaBlog.ViewModels;
-using X.PagedList;
 
 namespace VistaBlog.Areas.Admin.Controllers
 {
@@ -32,8 +31,7 @@ namespace VistaBlog.Areas.Admin.Controllers
         }
 
         [HttpGet]
-
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index()
         {
             var listOfPosts = new List<Post>();
 
@@ -56,10 +54,7 @@ namespace VistaBlog.Areas.Admin.Controllers
                 ThumbnailUrl = x.ThumbnailUrl,
                 AuthorName = x.ApplicationUser!.FirstName + " " + x.ApplicationUser.LastName
             }).ToList();
-            int pageSize = 5;
-            int pageNumber = (page ?? 1);
-
-            return View(await listOfPostsVM.OrderByDescending(x => x.CreatedDate).ToPagedListAsync(pageNumber, pageSize));
+            return View(listOfPostsVM);
         }
 
         [HttpGet]
