@@ -1,6 +1,7 @@
 ﻿@model VistaBlog.ViewModels.RegisterVM
 
 @{
+    Layout = "_LoginLayout";
     ViewData["Title"] = "Register User";
 }
 
@@ -37,10 +38,6 @@
                     <input type="password" asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                @* <div class="mb-2">
-                    <input type="checkbox" class="custom-checkbox" asp-for="IsAdmin" />
-                    <label>Is Admin?</label>
-                </div> *@
                 <div class="mb-2">
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                 </div>

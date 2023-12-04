@@ -30,7 +30,8 @@ namespace VistaBlog.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet("Posts")]
         public async Task<IActionResult> Index()
         {
             var listOfPosts = new List<Post>();

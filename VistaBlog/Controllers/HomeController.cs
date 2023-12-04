@@ -4,7 +4,8 @@ using VistaBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-
+using VistaBlog.Areas.Admin.Controllers;
+using AspNetCore;
 
 namespace VistaBlog.Controllers
 {
