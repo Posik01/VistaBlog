@@ -6,7 +6,7 @@
     var setting = _context.Settings!.ToList();
     var vm = new SettingVM()
             {
-                SiteName = setting[0].SiteName,
+
                 GithubUrl = setting[0].GithubUrl,
                 FacebookUrl = setting[0].FacebookUrl,
                 TwitterUrl = setting[0].TwitterUrl
@@ -20,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>@ViewData["Title"] - @vm.SiteName</title>
+    <title>VistaBlog</title>
     <link rel="icon" type="image/x-icon" href="~/blog/assets/favicon.ico" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -90,7 +90,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; @vm.SiteName 2022</div>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; VistaBlog 2023</div>
                 </div>
             </div>
         </div>
